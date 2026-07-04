@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zimal Tajwer | Premium 3D Portfolio</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Stylesheet -->
+  <!-- Global Debug Error Logger Overlay -->
+  <script>
+    window.addEventListener('error', function(e) {
+      const consoleDiv = document.getElementById('debug-error-console');
+      if (consoleDiv) {
+        consoleDiv.style.display = 'block';
+        consoleDiv.innerHTML += '<strong>JS Error:</strong> ' + e.message + ' at ' + e.filename + ':' + e.lineno + '<br>';
+      }
+    });
+  </script>
+  <script type="module" crossorigin src="/assets/index-CVozqwA6.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-C5nmyFXA.css">
+</head>
+<body class="dark-theme">
+  <!-- Floating Debug Console overlay -->
+  <div id="debug-error-console" style="position: fixed; top: 10px; left: 10px; background: rgba(220,53,69,0.9); color: white; padding: 12px; border-radius: 8px; z-index: 999999; font-size: 13px; font-family: monospace; display: none; max-width: 90%; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); overflow-y: auto; max-height: 200px;"></div>
+  <!-- Interactive Cursor Glow Background -->
+  <div class="cursor-glow" id="cursor-glow"></div>
+
+  <!-- Website Background 3D Canvas -->
+  <div id="bg-canvas-container" class="bg-canvas-container"></div>
+  <!-- Custom Interactive Cursor -->
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-outline" id="cursor-outline"></div>
+
+  <!-- Glassmorphic Loading Screen -->
+  <div class="loading-screen" id="loading-screen">
+    <div class="loader-content">
+      <div class="loader-logo">
+        <span class="logo-accent">&lt;</span>ZIMAL<span class="logo-accent">/&gt;</span>
+      </div>
+      <div class="loader-bar-container">
+        <div class="loader-bar" id="loader-bar"></div>
+      </div>
+      <div class="loader-text">Loading 3D Models... <span id="loader-percentage">0%</span></div>
+      <div class="loader-subtext">Preparing immersive 3D experience</div>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <header class="glass-nav">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo">
+        <span class="logo-accent">&lt;</span>ZT<span class="logo-accent">/&gt;</span>
+      </a>
+      
+      <nav class="nav-menu" id="nav-menu">
+        <a href="#home" class="nav-link active" data-section="home">
+          <i class="fa-solid fa-house"></i> <span>Home</span>
+        </a>
+        <a href="#about" class="nav-link" data-section="about">
+          <i class="fa-solid fa-user"></i> <span>About</span>
+        </a>
+        <a href="#projects" class="nav-link" data-section="projects">
+          <i class="fa-solid fa-code"></i> <span>Projects</span>
+        </a>
+        <a href="#tech" class="nav-link" data-section="tech">
+          <i class="fa-solid fa-layer-group"></i> <span>Skills</span>
+        </a>
+        <a href="#contact" class="nav-link" data-section="contact">
+          <i class="fa-solid fa-envelope"></i> <span>Contact</span>
+        </a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Theme Toggle -->
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon moon-icon"></i>
+          <i class="fa-solid fa-sun sun-icon"></i>
+        </button>
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Toggle Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Wrapper -->
+  <main class="page-container">
+
+    <!-- HOME SECTION (HERO) -->
+    <section id="home" class="page-section active">
+      <div class="hero-wrapper">
+        <div class="hero-content">
+          <div class="badge glow-badge">
+            <span class="pulse-dot"></span> Available for Remote Work Only
+          </div>
+          <h1 class="hero-title">
+            Hi, I'm <br>
+            <span class="gradient-text">Zimal Tajwer</span>
+          </h1>
+          <h2 class="hero-subtitle">
+            Full-Stack Web &amp; App Specialist &amp; Software Engineer
+          </h2>
+          <p class="hero-description">
+            A passionate <strong>7th-grade student</strong> building the future of web and mobile applications. Currently working as a <strong>3D Web Developer</strong> (Remote, project-based) at <strong>Bitvista</strong>, specializing in immersive experiences, backend systems, and mobile apps.
+          </p>
+          <div class="hero-buttons">
+            <a href="#projects" class="btn btn-primary nav-action-btn" data-section="projects">
+              View Work <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a href="#contact" class="btn btn-secondary nav-action-btn" data-section="contact">
+              Let's Connect <i class="fa-solid fa-envelope"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-3d-container">
+          <!-- Three.js Canvas for me.glb -->
+          <div id="hero-canvas-container" class="canvas-container">
+            <div class="canvas-loading">
+              <i class="fa-solid fa-circle-notch fa-spin"></i> Loading 3D Model...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1. Stats Counter Section -->
+      <div class="home-stats-grid">
+        <div class="stat-card glass-card">
+          <div class="stat-icon"><i class="fa-solid fa-code-branch"></i></div>
+          <div class="stat-info">
+            <h3 class="stat-number">10+</h3>
+            <p class="stat-label">Projects Completed</p>
+          </div>
+        </div>
+        <div class="stat-card glass-card">
+          <div class="stat-icon"><i class="fa-solid fa-briefcase"></i></div>
+          <div class="stat-info">
+            <h3 class="stat-number">3D Web</h3>
+            <p class="stat-label">Developer at Bitvista</p>
+          </div>
+        </div>
+        <div class="stat-card glass-card">
+          <div class="stat-icon"><i class="fa-solid fa-user-graduate"></i></div>
+          <div class="stat-info">
+            <h3 class="stat-number">7th</h3>
+            <p class="stat-label">Grade Student Prodigy</p>
+          </div>
+        </div>
+        <div class="stat-card glass-card">
+          <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+          <div class="stat-info">
+            <h3 class="stat-number">Top 3</h3>
+            <p class="stat-label">Aptech Hackathon</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. AI & ML Deep Dive Section -->
+      <div class="home-ai-section glass-card">
+        <div class="ai-content-side">
+          <div class="badge glow-badge">
+            <i class="fa-solid fa-brain"></i> Artificial Intelligence & Machine Learning
+          </div>
+          <h2>Exploring the Future of <span class="gradient-text">AI & Data Analytics</span></h2>
+          <p>
+            As a software engineer, I believe that combining immersive frontend graphics with intelligent backends is the next frontier of web design. Concurrently with my 7th-grade coursework, I am deep-diving into <strong>Data Analysis</strong>, <strong>Machine Learning</strong>, and <strong>Python</strong>.
+          </p>
+          <p>
+            I develop platforms like <strong>Neuro-Magic</strong> (a Prompt Engineering system) and <strong>Torch</strong> (an automated product matching application) to harness AI capabilities. My goal is to build intelligent web apps that can solve complex logic and automate decisions on the fly.
+          </p>
+          <div class="learning-list">
+            <div class="learn-item"><i class="fa-brands fa-python text-blue"></i> Python Programming</div>
+            <div class="learn-item"><i class="fa-solid fa-chart-line text-orange"></i> Data Analysis</div>
+            <div class="learn-item"><i class="fa-solid fa-robot text-purple"></i> Prompt Engineering</div>
+          </div>
+        </div>
+        <div class="ai-image-side">
+          <div class="image-frame-container">
+            <img src="/dip.jpeg" alt="AI & ML Engineering" class="ai-profile-img">
+            <div class="frame-backdrop"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Dynamic Tech Spotlight Showcase -->
+      <div class="home-services-section">
+        <h2 class="sub-section-title">What I <span class="gradient-text">Excel At</span></h2>
+        <div class="services-grid">
+          <div class="service-card glass-card">
+            <div class="service-icon"><i class="fa-solid fa-cubes"></i></div>
+            <h3>3D Web Development</h3>
+            <p>Creating highly custom WebGL systems, Three.js shaders, and interactive glTF/glb scenes that respond to camera overlays, scroll timelines, and cursor movements.</p>
+          </div>
+          <div class="service-card glass-card">
+            <div class="service-icon"><i class="fa-solid fa-laptop-code"></i></div>
+            <h3>Full-Stack Systems</h3>
+            <p>Designing modern, secure databases (MySQL, MariaDB, SQLite) and writing scalable API services with PHP, Laravel, and Flask backends.</p>
+          </div>
+          <div class="service-card glass-card">
+            <div class="service-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+            <h3>Cross-Platform Mobile Apps</h3>
+            <p>Developing native, performant applications for Android and iOS devices using Flutter and Dart, integrating local databases (Sqflite) and state management.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. YouTube Channel Showcase (Taj World Tech) -->
+      <div class="home-youtube-section glass-card">
+        <div class="yt-info">
+          <div class="badge glow-badge">
+            <i class="fa-brands fa-youtube"></i> Education & Coding Tutorials
+          </div>
+          <h2>Taj World Tech <span class="gradient-text">YouTube Channel</span></h2>
+          <p>
+            I love sharing my knowledge with the developer community. On my channel <strong>@tajworld-tech</strong>, I publish tutorials on game development, python scripts, full-stack web architectures, and mobile app design.
+          </p>
+          <a href="https://www.youtube.com/@tajworld-tech" target="_blank" class="btn btn-primary yt-btn">
+            Subscribe on YouTube <i class="fa-brands fa-youtube"></i>
+          </a>
+        </div>
+        <div class="yt-preview-container">
+          <div class="yt-video-card">
+            <div class="video-thumbnail-mesh fighting-gradient-mesh">
+              <i class="fa-solid fa-play"></i>
+              <span>Python Pygame: Naruto vs Sasuke Fighting Game Tutorial</span>
+            </div>
+            <div class="video-meta">
+              <h4>Naruto vs Sasuke Pygame Tutorial</h4>
+              <p>Learn how to code a complete retro arcade fighter in Python Pygame.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="page-section">
+      <div class="section-header">
+        <h2 class="section-title">About <span class="gradient-text">Me</span></h2>
+        <div class="section-line"></div>
+      </div>
+      
+      <div class="about-grid">
+        <div class="about-image-side">
+          <div class="image-frame-container">
+            <img src="/zimal.png" alt="Zimal Tajwer" class="about-profile-img">
+            <div class="frame-backdrop"></div>
+          </div>
+        </div>
+        
+        <div class="about-info-side">
+          <h3>Full-Stack &amp; 3D Specialist</h3>
+          <p class="about-text">
+            I am a self-taught, driven software engineer and full-stack developer who is concurrently navigating middle school (7th grade). My programming journey spans modern frameworks, interactive 3D graphics, native applications, and complex database engines. 
+          </p>
+          <p class="about-text">
+            My primary focus lies in creating robust architectures combined with elegant, visually stunning user interfaces. Currently, I am expanding my skills as a <strong>Data Analyst</strong> and learning advanced <strong>Python</strong>.
+          </p>
+          
+          <div class="info-badges">
+            <div class="info-item">
+              <i class="fa-solid fa-graduation-cap"></i>
+              <div>
+                <h4>Education</h4>
+                <p>7th Grade Student</p>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fa-solid fa-briefcase"></i>
+              <div>
+                <h4>Availability</h4>
+                <p>Remote Only</p>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fa-solid fa-brain"></i>
+              <div>
+                <h4>Learning</h4>
+                <p>Data Analysis &amp; Python</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3D Key to Tech Card -->
+      <div class="about-key-section glass-card" style="margin-top: 3rem; display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; align-items: center; padding: 2.5rem; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+        <div id="key-canvas-container" class="canvas-container" style="height: 250px; background: rgba(0,0,0,0.15); border: 1px solid var(--glass-border); border-radius: var(--border-radius-md); overflow: hidden; position: relative;">
+          <div class="canvas-loading" style="position: absolute; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; color: var(--text-secondary);">
+            <i class="fa-solid fa-circle-notch fa-spin"></i> Loading Keyboard...
+          </div>
+        </div>
+        <div class="key-info">
+          <div class="badge glow-badge"><i class="fa-solid fa-keyboard"></i> Tools of the Trade</div>
+          <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; margin: 1rem 0; color: var(--text-primary);">Crafting Interactive Systems</h3>
+          <p class="about-text" style="margin: 0; color: var(--text-secondary);">
+            Clean code, tactile interfaces, and efficient algorithms are the foundation of high-performance apps. By bridging custom interactive frontends with structured backend architectures, I create systems that run smoothly and look beautiful.
+          </p>
+        </div>
+      </div>
+      <!-- EXPERIENCE / INTERNSHIP TIMELINE -->
+      <div class="timeline-section">
+        <h3 class="subsection-title"><i class="fa-solid fa-route"></i> Career Journey</h3>
+        <div class="timeline">
+          <!-- Experience 1 -->
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content glass-card">
+              <div class="timeline-header">
+                <span class="timeline-date">Present</span>
+                <h4>3D Web Developer (Remote)</h4>
+                <h5>Bitvista (Project-Based)</h5>
+              </div>
+              <p>Leading the development of highly interactive 3D web applications, integrating WebGL and custom 3D model interactions to deliver premium immersive digital products.</p>
+            </div>
+          </div>
+          
+          <!-- Experience 2 -->
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content glass-card">
+              <div class="timeline-header">
+                <span class="timeline-date">Internship</span>
+                <h4>Full-Stack Intern</h4>
+                <h5>decodeLabs</h5>
+              </div>
+              <div class="timeline-body-grid">
+                <div class="timeline-desc">
+                  <p>Acquired extensive hands-on experience building, testing, and shipping production-level applications. Collaborated remotely, working on database integrations and frontend layouts.</p>
+                </div>
+                <div class="timeline-image">
+                  <img src="/intern.jpeg" alt="decodeLabs Internship" class="timeline-img-thumbnail">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS SECTION -->
+    <section id="projects" class="page-section">
+      <div class="section-header">
+        <h2 class="section-title">My <span class="gradient-text">Projects</span></h2>
+        <div class="section-line"></div>
+      </div>
+
+      <!-- Project Filter Buttons -->
+      <div class="project-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="3d">3D &amp; WebGL</button>
+        <button class="filter-btn" data-filter="app">Mobile Apps</button>
+        <button class="filter-btn" data-filter="web">Websites</button>
+        <button class="filter-btn" data-filter="ai">AI / Python</button>
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="projects-grid">
+        
+        <!-- PROJECT: 3D Bags -->
+        <div class="project-card glass-card" data-category="3d">
+          <div class="project-img-container">
+            <div class="fallback-img orange-gradient-mesh">
+              <i class="fa-solid fa-bag-shopping"></i>
+              <span>3D Bag Configurator</span>
+            </div>
+            <div class="project-badge">3D Web</div>
+          </div>
+          <div class="project-info">
+            <h3>3D Bag Store</h3>
+            <p>An interactive, responsive 3D e-commerce showcase website displaying custom bag models with material and color configurations.</p>
+            <div class="project-tags">
+              <span>Three.js</span>
+              <span>WebGL</span>
+              <span>CSS3</span>
+            </div>
+            <div class="project-links">
+              <a href="https://zimal-bag-3d.vercel.app/" target="_blank" class="project-link-btn primary-btn">
+                Visit Website <i class="fa-solid fa-up-right-from-square"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT: Neuro-Magic -->
+        <div class="project-card glass-card" data-category="ai">
+          <div class="project-img-container carousel-container" id="neuro-carousel">
+            <div class="carousel-slide active">
+              <img src="/inn.jpeg" alt="Neuro Magic Slide 1">
+            </div>
+            <div class="carousel-slide">
+              <img src="/inn2.jpeg" alt="Neuro Magic Slide 2">
+            </div>
+            <div class="carousel-slide">
+              <img src="/cer.jpeg" alt="Innovalte Certificate">
+            </div>
+            <div class="carousel-slide">
+              <img src="/it.jpeg" alt="ITVision Participation">
+            </div>
+            <div class="carousel-controls">
+              <button class="carousel-prev" aria-label="Previous Slide"><i class="fa-solid fa-chevron-left"></i></button>
+              <button class="carousel-next" aria-label="Next Slide"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <div class="project-badge">Award Winning</div>
+          </div>
+          <div class="project-info">
+            <h3>Neuro-Magic Prompt Engineer</h3>
+            <p>A sophisticated Prompt Engineering platform designed for Innovalte Season 2. Earned a certificate and successfully participated in ITVision 2026 with this project.</p>
+            <div class="project-tags">
+              <span>Prompt Eng</span>
+              <span>AI / ML</span>
+              <span>Python</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/ztajwer/Nuero-Magic" target="_blank" class="project-link-btn code-btn">
+                GitHub Repo <i class="fa-brands fa-github"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT: Morphes -->
+        <div class="project-card glass-card" data-category="3d">
+          <div class="project-img-container">
+            <div class="fallback-img dark-gradient-mesh">
+              <i class="fa-solid fa-scissors"></i>
+              <span>Virtual Hair Try-On</span>
+            </div>
+            <div class="project-badge">IT Vision 2025</div>
+          </div>
+          <div class="project-info">
+            <h3>Morphes Try-On</h3>
+            <p>A virtual try-on website that lets users easily try different hairstyles using camera integration and 3D overlay meshes. Built for IT Vision 2025.</p>
+            <div class="project-tags">
+              <span>Computer Vision</span>
+              <span>JavaScript</span>
+              <span>Three.js</span>
+            </div>
+            <div class="project-links">
+              <a href="https://morphes.vercel.app/" target="_blank" class="project-link-btn primary-btn">
+                Try it out <i class="fa-solid fa-up-right-from-square"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT: Torch -->
+        <div class="project-card glass-card" data-category="web">
+          <div class="project-img-container">
+            <div class="fallback-img tech-gradient-mesh">
+              <i class="fa-solid fa-bolt"></i>
+              <span>Torch AI Product Finder</span>
+            </div>
+            <div class="project-badge">Python & Web</div>
+          </div>
+          <div class="project-info">
+            <h3>Torch Product Finder</h3>
+            <p>A smart, intuitive platform where users can easily find the perfect products to buy quickly based on dynamic criteria.</p>
+            <div class="project-tags">
+              <span>Python</span>
+              <span>Automation</span>
+              <span>Web Interface</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/ztajwer/Torch" target="_blank" class="project-link-btn code-btn">
+                GitHub Repo <i class="fa-brands fa-github"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT: Aptech Hackathon & Techwiz -->
+        <div class="project-card glass-card" data-category="ai">
+          <div class="project-img-container">
+            <img src="/zim.jpeg" alt="Aptech Hackathon Selection">
+            <div class="project-badge">Top 3 Selected</div>
+          </div>
+          <div class="project-info">
+            <h3>Hackathons &amp; Techwiz</h3>
+            <p>Selected for the Top 3 in the Aptech Hackathon (results releasing next month) and actively participated in the Techwiz International Competition.</p>
+            <div class="project-tags">
+              <span>Hackathon</span>
+              <span>Techwiz</span>
+              <span>Innovation</span>
+            </div>
+            <div class="project-links">
+              <span class="project-status-badge"><i class="fa-solid fa-hourglass-half"></i> Awaiting Final Results</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT: Ebooks App & Web -->
+        <div class="project-card glass-card" data-category="app">
+          <div class="project-img-container">
+            <div class="fallback-img app-gradient-mesh">
+              <i class="fa-solid fa-book-open"></i>
+              <span>Ebook Reader App</span>
+            </div>
+            <div class="project-badge">Cross Platform</div>
+          </div>
+          <div class="project-info">
+            <h3>Ebooks App &amp; Portal</h3>
+            <p>A complete book reader ecosystem. Comprises a responsive cross-platform reader app and a management portal with PHP &amp; MySQL.</p>
+            <div class="project-tags">
+              <span>PHP</span>
+              <span>MySQL</span>
+              <span>Flutter</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/ztajwer/Books-App" target="_blank" class="project-link-btn code-btn">
+                GitHub <i class="fa-brands fa-github"></i>
+              </a>
+              <!-- LinkedIn post in background -->
+              <a href="https://www.linkedin.com/posts/zimal-tajwer_webdevelopment-php-mysql-activity-7431893909552820224-D5h5" target="_blank" class="project-link-btn linkedin-btn">
+                LinkedIn Post <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT: City Guide App & Web -->
+        <div class="project-card glass-card" data-category="app">
+          <div class="project-img-container">
+            <div class="fallback-img city-gradient-mesh">
+              <i class="fa-solid fa-map-location-dot"></i>
+              <span>City Guide Application</span>
+            </div>
+            <div class="project-badge">Travel & Map</div>
+          </div>
+          <div class="project-info">
+            <h3>City Guide Platform</h3>
+            <p>A smart localized guide app that helps tourists and residents quickly find the best points of interest, tourist spots, and restaurants.</p>
+            <div class="project-tags">
+              <span>Flutter</span>
+              <span>MySQL</span>
+              <span>PHP API</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/ztajwer/City-Guide-App" target="_blank" class="project-link-btn code-btn">
+                GitHub <i class="fa-brands fa-github"></i>
+              </a>
+              <!-- LinkedIn post in background -->
+              <a href="https://www.linkedin.com/posts/zimal-tajwer_webdevelopment-php-mysql-activity-7428833217786302464-2JFA" target="_blank" class="project-link-btn linkedin-btn">
+                LinkedIn Post <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT: Secret Diary App -->
+        <div class="project-card glass-card" data-category="app">
+          <div class="project-img-container">
+            <div class="fallback-img diary-gradient-mesh">
+              <i class="fa-solid fa-lock"></i>
+              <span>Secret Diary System</span>
+            </div>
+            <div class="project-badge">Flutter SQLite</div>
+          </div>
+          <div class="project-info">
+            <h3>Secret Diary App</h3>
+            <p>A secure personal diary app with local database encryption, search functionalities, and smooth customizable UI options.</p>
+            <div class="project-tags">
+              <span>Flutter</span>
+              <span>Dart</span>
+              <span>SQLite</span>
+            </div>
+            <div class="project-links">
+              <!-- LinkedIn post in background -->
+              <a href="https://www.linkedin.com/posts/zimal-tajwer_flutter-dart-sqflite-ugcPost-7434572464715657216-06v8/" target="_blank" class="project-link-btn linkedin-btn full-width-btn">
+                Watch Demo Post <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT: Chess Game App -->
+        <div class="project-card glass-card" data-category="app">
+          <div class="project-img-container">
+            <div class="fallback-img chess-gradient-mesh">
+              <i class="fa-solid fa-chess"></i>
+              <span>3D/2D Chess Game</span>
+            </div>
+            <div class="project-badge">Mobile Game</div>
+          </div>
+          <div class="project-info">
+            <h3>Chess Game App</h3>
+            <p>A feature-packed chess game for Android and iOS devices, featuring board customisation, move log history, and smooth animations.</p>
+            <div class="project-tags">
+              <span>Flutter</span>
+              <span>Dart</span>
+              <span>Game Loop</span>
+            </div>
+            <div class="project-links">
+              <!-- LinkedIn post in background -->
+              <a href="https://www.linkedin.com/posts/zimal-tajwer_flutter-dart-mobileapp-activity-7431536104874377216-S3rg" target="_blank" class="project-link-btn linkedin-btn full-width-btn">
+                Watch Game Demo <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT: Naruto vs Sasuke -->
+        <div class="project-card glass-card" data-category="ai">
+          <div class="project-img-container">
+            <div class="fallback-img fighting-gradient-mesh">
+              <i class="fa-solid fa-gamepad"></i>
+              <span>Pygame Arcade Game</span>
+            </div>
+            <div class="project-badge">Python Pygame</div>
+          </div>
+          <div class="project-info">
+            <h3>Naruto vs Sasuke Fighter</h3>
+            <p>A fast-paced, classic 2D retro fighting game developed in Pygame featuring custom sprites, health bars, combos, and movement physics.</p>
+            <div class="project-tags">
+              <span>Python</span>
+              <span>Pygame</span>
+              <span>OOP</span>
+            </div>
+            <div class="project-links">
+              <!-- LinkedIn post in background -->
+              <a href="https://www.linkedin.com/posts/zimal-tajwer_python-pygame-gamedevelopment-activity-7413805644731990017-XJ2q" target="_blank" class="project-link-btn linkedin-btn full-width-btn">
+                Watch Battle Gameplay <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TECH STACK SECTION -->
+    <section id="tech" class="page-section">
+      <div class="section-header">
+        <h2 class="section-title">My <span class="gradient-text">Skills</span></h2>
+        <div class="section-line"></div>
+      </div>
+      
+      <div class="tech-wrapper">
+        <div class="tech-grid">
+          <!-- Category: Frontend -->
+          <div class="tech-category glass-card">
+            <h3><i class="fa-solid fa-display"></i> Frontend Web</h3>
+            <div class="tech-list">
+              <div class="tech-item"><i class="fa-brands fa-html5 text-orange"></i> HTML5</div>
+              <div class="tech-item"><i class="fa-brands fa-css3-alt text-blue"></i> CSS3</div>
+              <div class="tech-item"><i class="fa-brands fa-js text-yellow"></i> JavaScript</div>
+              <div class="tech-item"><i class="fa-brands fa-bootstrap text-purple"></i> Bootstrap</div>
+              <div class="tech-item"><i class="fa-solid fa-code text-blue"></i> jQuery</div>
+              <div class="tech-item"><i class="fa-solid fa-cube text-teal"></i> WebGL</div>
+              <div class="tech-item"><i class="fa-solid fa-shapes text-orange"></i> Three.js</div>
+              <div class="tech-item"><i class="fa-brands fa-react text-teal"></i> React</div>
+            </div>
+          </div>
+
+          <!-- Category: Backend & Database -->
+          <div class="tech-category glass-card">
+            <h3><i class="fa-solid fa-server"></i> Backend &amp; Databases</h3>
+            <div class="tech-list">
+              <div class="tech-item"><i class="fa-brands fa-php text-purple"></i> PHP</div>
+              <div class="tech-item"><i class="fa-brands fa-laravel text-red"></i> Laravel</div>
+              <div class="tech-item"><i class="fa-brands fa-python text-blue"></i> Python</div>
+              <div class="tech-item"><i class="fa-solid fa-flask text-green"></i> Flask</div>
+              <div class="tech-item"><i class="fa-solid fa-database text-blue"></i> MySQL</div>
+              <div class="tech-item"><i class="fa-solid fa-database text-teal"></i> SQLite</div>
+              <div class="tech-item"><i class="fa-solid fa-database text-orange"></i> MariaDB</div>
+            </div>
+          </div>
+
+          <!-- Category: App Dev & Cloud -->
+          <div class="tech-category glass-card">
+            <h3><i class="fa-solid fa-mobile-screen"></i> Mobile App &amp; Cloud</h3>
+            <div class="tech-list">
+              <div class="tech-item"><i class="fa-solid fa-mobile-screen-button text-blue"></i> Flutter</div>
+              <div class="tech-item"><i class="fa-solid fa-dart-lang text-teal"></i> Dart</div>
+              <div class="tech-item"><i class="fa-solid fa-fire text-orange"></i> Firebase</div>
+              <div class="tech-item"><i class="fa-solid fa-bolt text-green"></i> Supabase</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tech-3d-side">
+          <div class="tech-3d-card glass-card">
+            <div id="tech-canvas-container" class="canvas-container">
+              <div class="canvas-loading">
+                <i class="fa-solid fa-circle-notch fa-spin"></i> Loading Laptop 3D Model...
+              </div>
+            </div>
+            <div class="canvas-instruction">
+              <i class="fa-solid fa-arrows-spin"></i> Hover/Drag to spin laptop
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="page-section">
+      <div class="section-header">
+        <h2 class="section-title">Get In <span class="gradient-text">Touch</span></h2>
+        <div class="section-line"></div>
+      </div>
+      
+      <div class="contact-grid">
+        <div class="contact-info-card glass-card">
+          <h3>Contact Info</h3>
+          <p class="contact-subtitle">Feel free to reach out to me for collaboration, project proposals, or queries.</p>
+          
+          <div class="contact-details">
+            <a href="mailto:zimaltajwer@gmail.com" class="contact-detail-item">
+              <div class="icon-circle"><i class="fa-solid fa-envelope"></i></div>
+              <div>
+                <h4>Email</h4>
+                <p>zimaltajwer@gmail.com</p>
+              </div>
+            </a>
+            
+            <a href="tel:03332288559" class="contact-detail-item">
+              <div class="icon-circle"><i class="fa-solid fa-phone"></i></div>
+              <div>
+                <h4>Phone</h4>
+                <p>0333-2288559</p>
+              </div>
+            </a>
+            
+            <div class="contact-detail-item">
+              <div class="icon-circle"><i class="fa-solid fa-location-dot"></i></div>
+              <div>
+                <h4>Location</h4>
+                <p>Remote Only</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="social-links-container">
+            <h4>Follow &amp; Connect</h4>
+            <div class="social-links">
+              <a href="https://www.linkedin.com/in/zimal-tajwer/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="https://github.com/ztajwer/" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+              <a href="https://www.youtube.com/@tajworld-tech" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form-card glass-card">
+          <h3>Send Message</h3>
+          <form id="contact-form">
+            <!-- Hidden FormSubmit.co configs -->
+            <input type="hidden" name="_captcha" value="false">
+            
+            <div class="form-group">
+              <label for="form-name">Full Name</label>
+              <input type="text" name="name" id="form-name" placeholder="John Doe" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="form-email">Email Address</label>
+              <input type="email" name="email" id="form-email" placeholder="john@example.com" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="form-message">Your Message</label>
+              <textarea name="message" id="form-message" rows="5" placeholder="Hey Zimal, I would like to collaborate on..." required></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary submit-btn">
+              Send Message <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Big Stylish Footer -->
+  <footer class="big-footer">
+    <div class="footer-grid">
+      <div class="footer-col brand-col">
+        <h3 class="footer-logo"><span class="logo-accent">&lt;</span>ZIMAL<span class="logo-accent">/&gt;</span></h3>
+        <p class="footer-bio">A self-taught software prodigy building the future of 3D graphics, full-stack systems, and mobile applications.</p>
+        <div class="footer-socials">
+          <a href="https://www.linkedin.com/in/zimal-tajwer/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://github.com/ztajwer/" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="https://www.youtube.com/@tajworld-tech" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col links-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#home" class="nav-action-btn" data-section="home">Home</a></li>
+          <li><a href="#about" class="nav-action-btn" data-section="about">About</a></li>
+          <li><a href="#projects" class="nav-action-btn" data-section="projects">Projects</a></li>
+          <li><a href="#tech" class="nav-action-btn" data-section="tech">Skills</a></li>
+          <li><a href="#contact" class="nav-action-btn" data-section="contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col info-col">
+        <h4>Availability</h4>
+        <p class="availability-status"><span class="pulse-dot"></span> 100% Remote Only</p>
+        <p class="footer-contact-info"><i class="fa-solid fa-envelope"></i> zimaltajwer@gmail.com</p>
+        <p class="footer-contact-info"><i class="fa-solid fa-phone"></i> 0333-2288559</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Zimal Tajwer. All rights reserved. Crafted with passion &amp; WebGL.</p>
+      <a href="#home" class="scroll-top-btn nav-action-btn" data-section="home" aria-label="Back to Top"><i class="fa-solid fa-chevron-up"></i></a>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp & Chatbot Widgets -->
+  <div class="floating-widgets">
+    <!-- WhatsApp Floating Action Button -->
+    <a href="https://wa.me/923332288559?text=Hi%20Zimal,%20I%20saw%20your%20portfolio%20and%20would%20love%20to%20connect!" 
+       target="_blank" 
+       class="floating-btn whatsapp-btn" 
+       aria-label="Chat on WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span class="tooltip-text">Chat on WhatsApp</span>
+    </a>
+
+  </div>
+
+  <!-- Custom Glassmorphic Success Modal -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal-card glass-card">
+      <div class="modal-icon"><i class="fa-solid fa-circle-check"></i></div>
+      <h3>Message Sent!</h3>
+      <p>Thank you for reaching out. Zimal will get back to you shortly.</p>
+      <button class="btn btn-primary modal-close-btn" id="success-modal-close">Awesome</button>
+    </div>
+  </div>
+  <!-- Javascript Modules -->
+</body>
+</html>
