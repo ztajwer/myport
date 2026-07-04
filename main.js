@@ -23,6 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
       targetSection.classList.add('active');
       // Scroll to top
       window.scrollTo(0, 0);
+
+      // Lazy load 3D scenes if navigating to those tabs
+      if (targetSectionId === 'tech' && typeof window.loadTechScene === 'function') {
+        window.loadTechScene();
+      } else if (targetSectionId === 'about' && typeof window.loadKeyScene === 'function') {
+        window.loadKeyScene();
+      }
+
       // Dispatch resize event (essential for hidden 3D canvases to calculate their sizes)
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'));

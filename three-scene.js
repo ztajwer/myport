@@ -2,6 +2,7 @@
 
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 // 1. Loading Manager Setup
 const loadingManager = new THREE.LoadingManager();
@@ -40,6 +41,11 @@ setTimeout(() => {
 
 // Instantiating the GLTF Loader
 const gltfLoader = new GLTFLoader(loadingManager);
+
+// Configure DRACOLoader for Draco compressed models
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+gltfLoader.setDRACOLoader(dracoLoader);
 
 // Global Mouse tracker for 3D interactions
 const mouse = { x: 0, y: 0 };
@@ -96,7 +102,7 @@ const initHeroScene = () => {
 
   // Load Model
   gltfLoader.load(
-    '/me.glb',
+    '/me_opt.glb',
     (gltf) => {
       heroModel = gltf.scene;
 
@@ -114,11 +120,11 @@ const initHeroScene = () => {
       heroModel.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
 
       heroGroup.add(heroModel);
-      console.log("Hero me.glb model loaded successfully!");
+      console.log("Hero me_opt.glb model loaded successfully!");
     },
     undefined,
     (error) => {
-      console.error('Error loading me.glb:', error);
+      console.error('Error loading me_opt.glb:', error);
       container.innerHTML = '<div class="canvas-loading"><i class="fa-solid fa-triangle-exclamation"></i> Error loading 3D Model</div>';
     }
   );
@@ -215,7 +221,7 @@ const initTechScene = () => {
 
   // Load Model
   gltfLoader.load(
-    '/lap.glb',
+    '/lap_opt.glb',
     (gltf) => {
       laptopModel = gltf.scene;
       console.log("Tech Laptop model loaded successfully!");
@@ -269,7 +275,7 @@ const initTechScene = () => {
     },
     undefined,
     (error) => {
-      console.error('Error loading lap.glb:', error);
+      console.error('Error loading lap_opt.glb:', error);
       container.innerHTML = `<div class="canvas-loading"><i class="fa-solid fa-triangle-exclamation"></i> Error: ${error.message || 'File path mismatch or WebGL issue'}</div>`;
     }
   );
@@ -360,7 +366,7 @@ const initBgScene = () => {
 
   // Load Model
   gltfLoader.load(
-    '/pla.glb',
+    '/pla_opt.glb',
     (gltf) => {
       bgModel = gltf.scene;
       console.log("Background Planet model loaded successfully!");
@@ -412,7 +418,7 @@ const initBgScene = () => {
     },
     undefined,
     (error) => {
-      console.error('Error loading pla.glb:', error);
+      console.error('Error loading pla_opt.glb:', error);
     }
   );
 
@@ -507,7 +513,7 @@ const initKeyScene = () => {
 
   // Load Model
   gltfLoader.load(
-    '/mechanical_keyboard.glb',
+    '/key_opt.glb',
     (gltf) => {
       // Clear loading indicator
       container.innerHTML = '';
@@ -553,7 +559,7 @@ const initKeyScene = () => {
     },
     undefined,
     (error) => {
-      console.error('Error loading mechanical_keyboard.glb:', error);
+      console.error('Error loading key_opt.glb:', error);
       container.innerHTML = `<div class="canvas-loading"><i class="fa-solid fa-triangle-exclamation"></i> Error loading 3D keyboard</div>`;
     }
   );
@@ -601,19 +607,33 @@ const initKeyScene = () => {
 };
 
 
-// Initialize all scenes once DOM is ready
+// Lazy loading state trackers
+window.techSceneLoaded = false;
+window.keySceneLoaded = false;
+
+window.loadTechScene = () => {
+  if (!window.techSceneLoaded) {
+    window.techSceneLoaded = true;
+    initTechScene();
+  }
+};
+
+window.loadKeyScene = () => {
+  if (!window.keySceneLoaded) {
+    window.keySceneLoaded = true;
+    initKeyScene();
+  }
+};
+
+// Initialize only home and background planet at DOM load
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     initBgScene();
     initHeroScene();
-    initTechScene();
-    initKeyScene();
     setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
   });
 } else {
   initBgScene();
   initHeroScene();
-  initTechScene();
-  initKeyScene();
   setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
 }
