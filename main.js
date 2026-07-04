@@ -94,48 +94,59 @@ document.addEventListener('DOMContentLoaded', () => {
   const cursorOutline = document.getElementById('cursor-outline');
   const cursorGlow = document.getElementById('cursor-glow');
 
-  let mouseX = window.innerWidth / 2;
-  let mouseY = window.innerHeight / 2;
-  let outlineX = mouseX;
-  let outlineY = mouseY;
+  // Only activate custom cursor on non-touch (pointer) devices
+  const isPointerDevice = window.matchMedia('(pointer: fine)').matches;
 
-  // Track mouse coordinates
-  window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+  if (isPointerDevice) {
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let outlineX = mouseX;
+    let outlineY = mouseY;
 
-    // Direct cursor dot tracking
-    cursorDot.style.left = `${mouseX}px`;
-    cursorDot.style.top = `${mouseY}px`;
+    // Track mouse coordinates
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
 
-    // Spotlight glow custom CSS properties
-    cursorGlow.style.setProperty('--mouse-x', `${mouseX}px`);
-    cursorGlow.style.setProperty('--mouse-y', `${mouseY}px`);
-  });
+      // Direct cursor dot tracking
+      cursorDot.style.left = `${mouseX}px`;
+      cursorDot.style.top = `${mouseY}px`;
 
-  // Smooth lerp (physics) for outline cursor follower
-  const animateOutline = () => {
-    const lerpFactor = 0.15; // Speed of tracking outline
-    outlineX += (mouseX - outlineX) * lerpFactor;
-    outlineY += (mouseY - outlineY) * lerpFactor;
-
-    cursorOutline.style.left = `${outlineX}px`;
-    cursorOutline.style.top = `${outlineY}px`;
-
-    requestAnimationFrame(animateOutline);
-  };
-  animateOutline();
-
-  // Hover states for interactive elements (expand cursor)
-  const hoverables = document.querySelectorAll('a, button, .project-card, .tech-item, input, textarea');
-  hoverables.forEach(item => {
-    item.addEventListener('mouseenter', () => {
-      document.body.classList.add('cursor-hover');
+      // Spotlight glow custom CSS properties
+      cursorGlow.style.setProperty('--mouse-x', `${mouseX}px`);
+      cursorGlow.style.setProperty('--mouse-y', `${mouseY}px`);
     });
-    item.addEventListener('mouseleave', () => {
-      document.body.classList.remove('cursor-hover');
+
+    // Smooth lerp (physics) for outline cursor follower
+    const animateOutline = () => {
+      const lerpFactor = 0.15; // Speed of tracking outline
+      outlineX += (mouseX - outlineX) * lerpFactor;
+      outlineY += (mouseY - outlineY) * lerpFactor;
+
+      cursorOutline.style.left = `${outlineX}px`;
+      cursorOutline.style.top = `${outlineY}px`;
+
+      requestAnimationFrame(animateOutline);
+    };
+    animateOutline();
+
+    // Hover states for interactive elements (expand cursor)
+    const hoverables = document.querySelectorAll('a, button, .project-card, .tech-item, input, textarea');
+    hoverables.forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        document.body.classList.add('cursor-hover');
+      });
+      item.addEventListener('mouseleave', () => {
+        document.body.classList.remove('cursor-hover');
+      });
     });
-  });
+  } else {
+    // Hide cursor elements entirely on touch devices
+    if (cursorDot) cursorDot.style.display = 'none';
+    if (cursorOutline) cursorOutline.style.display = 'none';
+    if (cursorGlow) cursorGlow.style.display = 'none';
+  }
+
 
   // 3. Dark/Light Theme Switching
   const themeToggleBtn = document.getElementById('theme-toggle');
